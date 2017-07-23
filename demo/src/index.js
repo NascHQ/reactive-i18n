@@ -1,14 +1,76 @@
 import React, {Component} from 'react'
 import {render} from 'react-dom'
 
-import Example from '../../src'
+import I18N, { Label } from '../../src'
+import myDictionary from './demo-dict.js'
 
 class Demo extends Component {
+
+  constructor (props) {
+    super(props)
+    this.friends = new Set()
+    this.state = {
+      friends: [],
+      jointType: 1,
+      lang: 'en'
+    }
+  }
+
+  updateFriends (event) {
+    let friend = event.target.dataset.friend
+    if (event.target.checked) {
+      this.friends.add(friend)
+    } else {
+      this.friends.delete(friend)
+    }
+    this.setState({
+      friends: Array.from(this.friends)
+    })
+  }
+
+  updateLanguage (event) {
+    let el = event.target
+    this.setState({
+      lang: el.value
+    })
+  }
+
   render() {
-    return <div>
-      <h1>reactive-i18n Demo</h1>
-      <Example/>
-    </div>
+
+    return <I18N
+      use={myDictionary}
+      lang={this.state.lang}>
+      <div>
+        <div>
+          <div>
+            <Label term='choseLang' /><br />
+            <select onChange={this.updateLanguage.bind(this)} defaultValue={this.state.lang}>
+              <option value='en'>English</option>
+              <option value='es'>Spanish</option>
+              <option value='pt'>Portuguese</option>
+              <option value='ch'>Chinese</option>
+            </select>
+          </div>
+          <div>
+            <input type="checkbox" data-friend='Felipe' onClick={this.updateFriends.bind(this)} /> Felipe
+          </div>
+          <div>
+            <input type="checkbox" data-friend='Fran' onClick={this.updateFriends.bind(this)} /> Fran
+          </div>
+          <div>
+            <input type="checkbox" data-friend='Jaydson' onClick={this.updateFriends.bind(this)} /> Jaydson
+          </div>
+          <div>
+            <input type="checkbox" data-friend='Gabe' onClick={this.updateFriends.bind(this)} /> Gabe
+          </div>
+          <Label term='hi' /><br />
+          <Label
+            term='friends'
+            val={this.state.friends.length}
+            friends={this.state.friends} />
+        </div>
+      </div>
+    </I18N>
   }
 }
 
