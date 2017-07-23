@@ -80,6 +80,7 @@ export class Label extends Component {
           } else {
             let joints = this.getTerm('joints')
             if (joints) {
+              value = Array.from(value)
               let last = value.pop()
               value = value.join(joints[0] || ', ')
               value += (
@@ -108,7 +109,8 @@ export class Label extends Component {
       const curLangs = dicts.terms[dict].langs
       term = (curLangs[dicts.lang] || {})[lookingFor] ||
         (curLangs[dicts.fallbackLang] || {})[lookingFor] ||
-        (curLangs[dicts.baseLang] || {})[lookingFor]
+        (curLangs[dicts.baseLang] || {})[lookingFor] ||
+        (curLangs.world || {})[lookingFor]
     }
     return term
   }

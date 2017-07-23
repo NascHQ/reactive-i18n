@@ -12,7 +12,7 @@ class Demo extends Component {
     this.state = {
       friends: [],
       jointType: 1,
-      lang: 'en'
+      lang: 'en-US'
     }
   }
 
@@ -45,29 +45,42 @@ class Demo extends Component {
           <div>
             <Label term='choseLang' /><br />
             <select onChange={this.updateLanguage.bind(this)} defaultValue={this.state.lang}>
-              <option value='en'>English</option>
+              <option value='en-US'>English</option>
               <option value='es'>Spanish</option>
               <option value='pt'>Portuguese</option>
               <option value='ch'>Chinese</option>
             </select>
           </div>
-          <div>
-            <input type="checkbox" data-friend='Felipe' onClick={this.updateFriends.bind(this)} /> Felipe
-          </div>
-          <div>
-            <input type="checkbox" data-friend='Fran' onClick={this.updateFriends.bind(this)} /> Fran
-          </div>
-          <div>
-            <input type="checkbox" data-friend='Jaydson' onClick={this.updateFriends.bind(this)} /> Jaydson
-          </div>
-          <div>
-            <input type="checkbox" data-friend='Gabe' onClick={this.updateFriends.bind(this)} /> Gabe
-          </div>
+          <Label term='pickFriends' />
+          {
+            [
+              'Felipe',
+              'Jaydson',
+              'Jonh',
+              'Gabe'
+            ].map(cur => {
+              return     <div key={cur}>
+                <input
+                  type='checkbox'
+                  data-friend={cur}
+                  onClick={this.updateFriends.bind(this)}
+                  defaultChecked={this.friends.has(cur)} /> {cur}
+              </div>
+            })
+          }
           <Label term='hi' /><br />
           <Label
             term='friends'
             val={this.state.friends.length}
             friends={this.state.friends} />
+        </div>
+        <div>
+          <Label term='formatedData' />
+          <Label
+            term='birthDate'
+            day={'19'}
+            month={'07'}
+            year={'1985'} />
         </div>
       </div>
     </I18N>
