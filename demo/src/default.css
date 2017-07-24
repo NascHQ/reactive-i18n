@@ -10,6 +10,7 @@ body {
     background: -webkit-linear-gradient(-45deg, #ffb87a 0%,#e2610b 100%);
     background: linear-gradient(135deg, #ffb87a 0%,#e2610b 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffb87a', endColorstr='#e2610b',GradientType=1 );
+    background-attachment: fixed;
 }
 
 .choseLang-container {
@@ -23,6 +24,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-around;
+    margin: auto;
 }
 .lang-opt {
     font-size: 14px;
@@ -52,7 +54,7 @@ body {
     border-radius: 10px;
 }
 .final {
-    margin-bottom: 100px;
+    margin-bottom: 160px !important;
 }
 .wrapper {
     max-width: 460px;
