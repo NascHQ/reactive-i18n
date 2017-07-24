@@ -84,6 +84,7 @@ class Demo extends Component {
               day={'19'}
               month={'07'}
               year={'1985'} />
+            <Label term='PersonNameAndSurname' />
           </div>
         </div>
       </I18N>

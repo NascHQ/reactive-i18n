@@ -71,7 +71,7 @@ export class Label extends Component {
     this.setValues = this.setValues.bind(this)
     this.updateValues = this.updateValues.bind(this)
     this.done = this.done.bind(this)
-    this.getTerm = this.getTerm.bind(this)
+    this._getTerm = this._getTerm.bind(this)
   }
   done (term) {
     this.setState({
@@ -93,7 +93,7 @@ export class Label extends Component {
           if (value.length === 0) {
             value = ''
           } else {
-            let joints = this.getTerm('joints')
+            let joints = this._getTerm('joints')
             if (joints) {
               value = Array.from(value)
               let last = value.pop()
@@ -116,35 +116,30 @@ export class Label extends Component {
     })
     return term
   }
-  getTerm (lookingFor) {
+  _getTerm (lookingFor) {
     let dicts = Dictionaries[this.state.i18nid]
     let term = null
 
-    for (let dict in dicts.books) {
-      if (term) { return term }
-      const curLangs = dicts.books[dict].langs
-      term = (curLangs[dicts.lang] || {})[lookingFor] ||
-        (curLangs[dicts.fallbackLang] || {})[lookingFor] ||
-        (curLangs[dicts.baseLang] || {})[lookingFor] ||
-        (curLangs.world || {})[lookingFor]
-    }
+    term = getTerm(lookingFor, dicts.books, dicts.lang, dicts.fallbackLang, dicts.baseLang)
     return term
   }
   updateValues (props) {
     const lookingFor = props.term
 
-    let term = this.getTerm(lookingFor)
+    let term = this._getTerm(lookingFor)
     if (Array.isArray(term)) {
       term = term[props.val === 1 ? 0 : 1]
     }
     if (!term) {
-      term = lookingFor
-      console.warn('Missing term in dictionaries: ', lookingFor)
+      if (Dictionaries[this.state.i18nid].fallbackLang === 'none') {
+        term = ''
+      } else {
+        term = lookingFor.split(/(?=[A-Z])/)
+        term = term[0] + ' ' + term.slice(1).join(' ').toLowerCase();
+        console.warn('Missing term in dictionaries: ', lookingFor)
+      }
     } else {
       term = this.applyVariables(term, props)
-    }
-    if (term === lookingFor && Dictionaries[this.state.i18nid].fallbackLang === 'none') {
-      term = ''
     }
     this.done(term)
   }
@@ -182,4 +177,18 @@ export class Label extends Component {
   render (props) {
     return <span key={this.state.lang}>{this.state.term}</span>
   }
+}
+
+// (lookingFor, dicts.books, dicts.lang, dicts.fallbackLang, dicts.baseLang)
+export function getTerm (lookingFor, books, lang, fallbackLang, baseLang) {
+  let term = null
+  for (let dict in books) {
+    if (term) { return term }
+    const curLangs = books[dict].langs
+    term = (curLangs[lang] || {})[lookingFor] ||
+      (curLangs[fallbackLang] || {})[lookingFor] ||
+      (curLangs[baseLang] || {})[lookingFor] ||
+      (curLangs.world || {})[lookingFor]
+  }
+  return term
 }
