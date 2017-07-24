@@ -6,7 +6,9 @@ const Dictionaries = {}
 export default class I18N extends Component {
   constructor (props) {
     super(props)
-    this.state = {}
+    this.state = {
+      __DICS: Dictionaries
+    }
     this.instanceID = Math.ceil(Math.random() * 999999) + (new Date).getTime()
     this.setDictionary = this.setDictionary.bind(this)
   }
@@ -23,15 +25,26 @@ export default class I18N extends Component {
       }
       const dictId = dict.id + ':' + (dict.version || 1)
       let lang = props.lang || 'en-US'
-      if (!Dictionaries[this.instanceID] || Dictionaries[this.instanceID].lang !== lang) {
-        Dictionaries[this.instanceID] = {
+      let theDict = Dictionaries[this.instanceID]
+      let instanceID = this.instanceID
+      let langBase = lang.split('-')[0] || ''
+
+      if (!theDict) {
+        Dictionaries[instanceID] = {
           lang,
-          fallbackLang: props.fallbackLang || 'en', // || navigator.lang,
-          baseLang: lang.split('-')[0] || '',
-          terms: {}
+          fallbackLang: props.fallbackLang || langBase,
+          baseLang: langBase,
+          books: {}
         }
       }
-      Dictionaries[this.instanceID].terms[dictId] = dict
+      if (theDict && theDict.lang !== lang) {
+        Dictionaries[this.instanceID].lang = lang
+        if (Dictionaries[this.instanceID].fallbackLang !== 'none') {
+          Dictionaries[this.instanceID].fallbackLang = langBase
+        }
+        Dictionaries[this.instanceID].baseLang = langBase
+      }
+      Dictionaries[this.instanceID].books[dictId] = dict
     })
   }
   componentDidMount () {
@@ -52,7 +65,9 @@ export default class I18N extends Component {
 export class Label extends Component {
   constructor (props) {
     super(props)
-    this.state = {}
+    this.state = {
+      __DICS: Dictionaries
+    }
     this.setValues = this.setValues.bind(this)
     this.updateValues = this.updateValues.bind(this)
     this.done = this.done.bind(this)
@@ -104,9 +119,10 @@ export class Label extends Component {
   getTerm (lookingFor) {
     let dicts = Dictionaries[this.state.i18nid]
     let term = null
-    for (let dict in dicts.terms) {
-      if (term) { return }
-      const curLangs = dicts.terms[dict].langs
+
+    for (let dict in dicts.books) {
+      if (term) { return term }
+      const curLangs = dicts.books[dict].langs
       term = (curLangs[dicts.lang] || {})[lookingFor] ||
         (curLangs[dicts.fallbackLang] || {})[lookingFor] ||
         (curLangs[dicts.baseLang] || {})[lookingFor] ||
@@ -116,6 +132,7 @@ export class Label extends Component {
   }
   updateValues (props) {
     const lookingFor = props.term
+
     let term = this.getTerm(lookingFor)
     if (Array.isArray(term)) {
       term = term[props.val === 1 ? 0 : 1]
@@ -125,6 +142,9 @@ export class Label extends Component {
       console.warn('Missing term in dictionaries: ', lookingFor)
     } else {
       term = this.applyVariables(term, props)
+    }
+    if (term === lookingFor && Dictionaries[this.state.i18nid].fallbackLang === 'none') {
+      term = ''
     }
     this.done(term)
   }
@@ -139,9 +159,13 @@ export class Label extends Component {
           throw new Error('Could not find the I18N component on the ascending tree!')
         }
       }
-      this.setState({
+      let obj = {
         i18nid: node.dataset.i18nid
-      }, _ => this.updateValues(props))
+      }
+      if (Dictionaries[node.dataset.i18nid]) {
+        obj.lang = Dictionaries[node.dataset.i18nid].lang
+      }
+      this.setState(obj, _ => this.updateValues(props))
     } else {
       this.updateValues(props)
     }
@@ -149,15 +173,13 @@ export class Label extends Component {
   componentDidMount() {
     this.setValues(this.props)
   }
-  // shouldComponentUpdate (newProps, state) {
-  //   debugger
-  //   // this.setValues(newProps)
+  // shouldComponentUpdate (props, state) {
   //   return true
   // }
   componentWillReceiveProps(newProps) {
     this.setValues(newProps)
   }
   render (props) {
-    return <span>{this.state.term}</span>
+    return <span key={this.state.lang}>{this.state.term}</span>
   }
 }

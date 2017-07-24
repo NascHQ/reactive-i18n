@@ -1,6 +1,6 @@
 
 const dictionary = {
-    id: 'demo-dict',
+    id: 'demo-dict-for-compX',
     version: '1',
     langs: {
         world: {
