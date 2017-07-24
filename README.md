@@ -19,12 +19,12 @@ npm install reactive-i18n
 First, you import both `I18N` and `Label` 
 
 ```js
-import I18N, { Label } from '../../src'
+import I18N, { Label } from 'reactive-i18n'
 // OR
-import { I18N, Label } from '../../src'
+import { I18N, Label } from 'reactive-i18n'
 ```
 
-Then, you may import your dictionaries (to be descibre in chapter [#dictionaries](Dictionaries)):
+Then, you may import your dictionaries (to be descibre in chapter [Dictionaries](#dictionaries)):
 
 ```js
 import myDictionary from './my-dictionary.js'
@@ -39,11 +39,12 @@ You may specify a given scope for making use of a dictionary or language, like s
 ```js
     [...]
     render() {
-    return <I18N
-      use={myDictionary}
-      lang={this.state.lang}>
-      // your content goes here
-    </I18N>
+        return <I18N
+        use={myDictionary}
+        lang={this.state.lang}>
+            // your content goes here
+        </I18N>
+    }
     [...]
 ```
 
@@ -56,15 +57,16 @@ Inside any scope, you may use the `Label`.
 ```js
     [...]
     render() {
-    return <I18N
-      use={myDictionary}
-      lang={this.state.lang}>
-      <div>
-        [...]
-        <Label term='UserNameAndSurname' />
-        [...]
-      </div>
-    </I18N>
+        return <I18N
+        use={myDictionary}
+        lang={this.state.lang}>
+        <div>
+            [...]
+            <Label term='UserNameAndSurname' />
+            [...]
+        </div>
+        </I18N>
+    }
     [...]
 ```
 
@@ -282,7 +284,45 @@ For exampe:
     // ...
 ```
 
+### Different files for each language
 
+Once the _scope_ accepts multiple dictionaries, you can simply add different dictionaries there, each one, containing a single language.
+
+```js
+    [...]
+    render() {
+        return <I18N
+        use={[myEnDict, myEsDict, myPtDict]}
+        lang={this.state.lang}>
+            // your content goes here
+        </I18N>
+    }
+    [...]
+```
+
+### Fallback language
+
+By default, it will follow this pattern.  
+If you specify the lang `pt-BR`, it will look for the terms there.  
+If the term is not found, then looks for it in any dictionary in `pt`.  
+If not found yet, looks for it in `world`.  
+
+But you may specify the `fallbackLang` for the scope, changing the behavior of the second step.
+
+```js
+    [...]
+    render() {
+        return <I18N
+        use={[myEnDict, myEsDict, myPtDict]}
+        lang='pt-BR'
+        fallbackLang='en'>
+            // ...
+        </I18N>
+    }
+    [...]
+```
+
+The `fallbackLang` property also accepts `none`. In this case, if the term is not found in any dictionary, **no worning** will be triggered and will not show anything on the screen for that term.
 
 
 
