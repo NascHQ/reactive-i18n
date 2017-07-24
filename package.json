@@ -1,6 +1,6 @@
 {
   "name": "reactive-i18n",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Internacionalization to your components. Supporting multiple dictionaries, global contents, variables, plural and singular, among other features",
   "main": "lib/index.js",
   "module": "es/index.js",

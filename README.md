@@ -351,8 +351,11 @@ In your dictionaries:
 | DictionaryObj | id*            | An id for the dictionary |
 | DictionaryObj | version        | A version for the dictionary |
 | DictionaryObj | langs          | The languages object containing the languages and their terms |
-| 
 | langs         | world          | A fallback for terms not found specialized in other languages. May be used for shared terms |
 | langs         | langId         | Any language id, like `en` or `en-US`.  Its value must be an _Object_ |
 | langObject    | joints          | An array with three items: `the coma`, `the and` and `the or` representations for lists|
 | langObject    | terms          | May be a _String_ for that term in the given language, or an Array with two items, the first for the singular value, the second for the plural representation of the value |
+
+## Contributing
+
+Please feel free to contribute by reporting bugs or suggesting features, as well as sending pull requests, creating tests, etc :)
