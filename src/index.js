@@ -192,3 +192,5 @@ export function getTerm (lookingFor, books, lang, fallbackLang, baseLang) {
   }
   return term
 }
+
+export { I18N }
