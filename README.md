@@ -1,12 +1,10 @@
-# reactive-i18n
-
-[![Travis][build-badge]][build]
-[![npm package][npm-badge]][npm]
-[![Coveralls][coveralls-badge]][coveralls]
+# Reactive I18N
 
 Reactive-i18n allows you to, reactivelly, deal with _Internacionalization_ in your pages and apps.  
 
 With it, you create multiple dictionaries and use them in your components in a very, very ease, intuitive, readable and mantainable way. It even works with plurals, variables, lists and fallbacks.
+
+See it working in [this live demo](https://naschq.github.io/reactive-i18n/demo/dist/). And see its source [here](https://github.com/NascHQ/reactive-i18n/tree/master/demo/src)
 
 ## Installing it
 
@@ -324,13 +322,37 @@ But you may specify the `fallbackLang` for the scope, changing the behavior of t
 
 The `fallbackLang` property also accepts `none`. In this case, if the term is not found in any dictionary, **no worning** will be triggered and will not show anything on the screen for that term.
 
+## Technical table
 
+#### Component
 
-[build-badge]: https://img.shields.io/travis/user/repo/master.png?style=flat-square
-[build]: https://travis-ci.org/user/repo
+In your react components:  
+(* means mandatory)
 
-[npm-badge]: https://img.shields.io/npm/v/npm-package.png?style=flat-square
-[npm]: https://www.npmjs.org/package/npm-package
+| Element       | Prop           | Val             |
+| ------------- |----------------|-----------------|
+| <I18N>        | use*           | Object or array |
+| <I18N>        | className      | A className, so you can customize it |
+| <I18N>        | lang*          | String, the language itself, like `en` or `en-US` |
+| <I18N>        | fallbackLang   | String, the language to be used as fallback, like `en` or `en-US`  If `none`, the string will be ommited in case it was not found in any dictionary |
+| <Label>       | className      | A className, so you can customize it |
+| <Label>       | term*          | The term to be found in dictionaries |
+| <Label>       | val            | Used to decide if it is plural or singular |
+| <Label>       | jointType      | Used to know how to join lists with their last item.  May be 'and', 'or' or 'none (default is 'and') |
+| <Label>       | anyOtherProp   | Any other property will be passed to be used as variables |
 
-[coveralls-badge]: https://img.shields.io/coveralls/user/repo/master.png?style=flat-square
-[coveralls]: https://coveralls.io/github/user/repo
+#### Dictionary
+
+In your dictionaries:  
+(* means mandatory)
+
+| Element       | Prop           | Val                      |
+| ------------- |----------------|--------------------------|
+| DictionaryObj | id*            | An id for the dictionary |
+| DictionaryObj | version        | A version for the dictionary |
+| DictionaryObj | langs          | The languages object containing the languages and their terms |
+| 
+| langs         | world          | A fallback for terms not found specialized in other languages. May be used for shared terms |
+| langs         | langId         | Any language id, like `en` or `en-US`.  Its value must be an _Object_ |
+| langObject    | joints          | An array with three items: `the coma`, `the and` and `the or` representations for lists|
+| langObject    | terms          | May be a _String_ for that term in the given language, or an Array with two items, the first for the singular value, the second for the plural representation of the value |

@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import {render} from 'react-dom'
 
+require('./default.css')
+
 import I18N, { Label } from '../../src'
 import myDictionary from './dictionaries/demo-dict.js'
 import myEnDict from './dictionaries/en-only-dict.js'
@@ -30,10 +32,9 @@ class Demo extends Component {
     })
   }
 
-  updateLanguage (event) {
-    let el = event.target
+  updateLanguage (val) {
     this.setState({
-      lang: el.value
+      lang: val
     })
   }
 
@@ -45,55 +46,84 @@ class Demo extends Component {
         lang={this.state.lang}>
         <div>
           <div>
-            <div>
+            <div className='choseLang-container'>
               <Label term='choseLang' /><br />
-              <select onChange={this.updateLanguage.bind(this)} defaultValue={this.state.lang}>
-                <option value='en-US'>English</option>
-                <option value='es'>Spanish</option>
-                <option value='pt'>Portuguese</option>
-                <option value='ch'>Chinese</option>
-              </select>
+              <div className='lang-options'>
+                {
+                  [
+                    ['en-US', 'English'],
+                    ['es', 'Español'],
+                    ['pt-BR', 'Português'],
+                    ['ch', '中文'],
+                  ].map(cur => {
+                    return <span
+                      key={cur[0]}
+                      onClick={event => this.updateLanguage(cur[0])}
+                      className={'lang-opt ' + (cur[0] === this.state.lang ? 'selected' : '')}>
+                      {cur[1]}
+                    </span>
+                  })
+                }
+              </div>
             </div>
-            <Label term='pickFriends' />
-            {
-              [
-                'Felipe',
-                'Jaydson',
-                'Jonh',
-                'Gabe'
-              ].map(cur => {
-                return <div key={cur}>
-                  <input
-                    type='checkbox'
-                    data-friend={cur}
-                    onClick={this.updateFriends.bind(this)}
-                    defaultChecked={this.friends.has(cur)} /> {cur}
-                </div>
-              })
-            }
-            <Label term='hi' /><br />
-            <Label
-              term='friends'
-              val={this.state.friends.length}
-              friends={this.state.friends} />
+            <div className='pick-friends-container'>
+              <Label term='pickFriends' />
+              <br />
+              {
+                [
+                  'Felipe',
+                  'Jaydson',
+                  'Jonh',
+                  'Gabe'
+                ].map((cur, i) => {
+                  return <span key={cur}>
+                    <input
+                      type='checkbox'
+                      id={cur}
+                      data-friend={cur}
+                      onClick={this.updateFriends.bind(this)}
+                      defaultChecked={this.friends.has(cur)} /> <label htmlFor={cur} className='friend-name'>{cur}</label>
+                      { i % 2 !== 0 ? <br /> : ''}
+                  </span>
+                })
+              }
+            </div>
+            <div className='result'>
+              <Label term='hi' /><br />
+              <Label
+                term='friends'
+                val={this.state.friends.length}
+                friends={this.state.friends} />
+            </div>
           </div>
-          <div>
+          <div className='wrapper'>
             <Label term='formatedData' />
             <Label
               term='birthDate'
               day={'19'}
               month={'07'}
               year={'1985'} />
+            { /*
+            <br />
             <Label term='PersonNameAndSurname' />
+            */ }
           </div>
         </div>
       </I18N>
-      <I18N
-        use={[myEnDict, myEsDict, myDictionary]}
-        lang={this.state.lang}
-        fallbackLang='none'>
-        <Label term='text1' />
-      </I18N>
+      <div className='wrapper final'>
+        <I18N
+          use={[myEnDict, myEsDict, myDictionary]}
+          lang={this.state.lang}
+          fallbackLang='none'>
+          <Label term='text1' />
+        </I18N>
+      </div>
+
+      <footer>
+        <a href='https://github.com/NascHQ/reactive-i18n' target='_blank'>Github</a> | 
+        <a href='https://www.npmjs.com/package/reactive-i18n' target='_blank'>NPM</a> | 
+        <a href='https://twitter.com/felipenmoura' target='_blank'>@felipenmoura</a>
+      </footer>
     </div>
   }
 }

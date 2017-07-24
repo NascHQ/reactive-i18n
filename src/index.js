@@ -55,6 +55,7 @@ export default class I18N extends Component {
   }
   render() {
     return <div
+      className={this.props.className}
       data-i18nId={this.instanceID}
       key={this.props.lang}>
       {this.props.children}
@@ -175,7 +176,7 @@ export class Label extends Component {
     this.setValues(newProps)
   }
   render (props) {
-    return <span key={this.state.lang}>{this.state.term}</span>
+    return <span className={this.props.className} key={this.state.lang}>{this.state.term}</span>
   }
 }
 

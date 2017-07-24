@@ -1,7 +1,7 @@
 {
   "name": "reactive-i18n",
-  "version": "1.0.0",
-  "description": "reactive-i18n React component",
+  "version": "1.0.1",
+  "description": "Internacionalization to your components. Supporting multiple dictionaries, global contents, variables, plural and singular, among other features",
   "main": "lib/index.js",
   "module": "es/index.js",
   "files": [
@@ -27,11 +27,19 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1"
   },
-  "author": "",
-  "homepage": "",
+  "author": "@felipenmoura",
+  "homepage": "https://naschq.github.io/reactive-i18n/demo/dist/",
   "license": "MIT",
-  "repository": "",
+  "repository": "https://github.com/NascHQ/reactive-i18n",
   "keywords": [
-    "react-component"
+    "react-component",
+    "i18n",
+    "l10n",
+    "Internacionalization",
+    "dictionaries",
+    "dictionary",
+    "variables",
+    "plural",
+    "singular"
   ]
 }
