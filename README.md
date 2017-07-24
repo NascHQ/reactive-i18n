@@ -8,7 +8,7 @@ See it working in [this live demo](https://naschq.github.io/reactive-i18n/demo/d
 
 ## Installing it
 
-```
+```js
 npm install reactive-i18n
 ```
 
@@ -320,7 +320,7 @@ But you may specify the `fallbackLang` for the scope, changing the behavior of t
     [...]
 ```
 
-The `fallbackLang` property also accepts `none`. In this case, if the term is not found in any dictionary, **no worning** will be triggered and will not show anything on the screen for that term.
+The `fallbackLang` property also accepts `none`. In this case, if the term is not found in any dictionary, **no warning** will be triggered and it will not show anything on the screen for that term.
 
 ## Technical table
 
@@ -331,15 +331,15 @@ In your react components:
 
 | Element       | Prop           | Val             |
 | ------------- |----------------|-----------------|
-| <I18N>        | use*           | Object or array |
-| <I18N>        | className      | A className, so you can customize it |
-| <I18N>        | lang*          | String, the language itself, like `en` or `en-US` |
-| <I18N>        | fallbackLang   | String, the language to be used as fallback, like `en` or `en-US`  If `none`, the string will be ommited in case it was not found in any dictionary |
-| <Label>       | className      | A className, so you can customize it |
-| <Label>       | term*          | The term to be found in dictionaries |
-| <Label>       | val            | Used to decide if it is plural or singular |
-| <Label>       | jointType      | Used to know how to join lists with their last item.  May be 'and', 'or' or 'none (default is 'and') |
-| <Label>       | anyOtherProp   | Any other property will be passed to be used as variables |
+| < I18N >        | use*           | Object or array |
+| < I18N >        | className      | A className, so you can customize it |
+| < I18N >        | lang*          | String, the language itself, like `en` or `en-US` |
+| < I18N >        | fallbackLang   | String, the language to be used as fallback, like `en` or `en-US`  If `none`, the string will be ommited in case it was not found in any dictionary |
+| < Label >       | className      | A className, so you can customize it |
+| < Label >       | term*          | The term to be found in dictionaries |
+| < Label >       | val            | Used to decide if it is plural or singular |
+| < Label >       | jointType      | Used to know how to join lists with their last item.  May be 'and', 'or' or 'none (default is 'and') |
+| < Label >       | anyOtherProp   | Any other property will be passed to be used as variables |
 
 #### Dictionary
 
